@@ -16,36 +16,35 @@ def hello_monkey():
   session['counter'] = counter
 
   msg_body = request.values.get('Body')
+  msg_body = str(msg_body).lower()
 
-  if msg_body != "Help":
+  if msg_body != "help":
     # increment the counter
     counter += 1
   
-  if msg_body == "Help":
-    send_help_text()    
-  elif msg_body == "Reset":
-    reset_counter()
+  response = ""
+
+  if msg_body == "help":
+    response = send_help_text()    
+  elif msg_body == "reset":
+    response = reset_counter()
   elif counter == 1:
-    init_text()
+    response = init_text()
   elif counter == 2:
-    quiz_question_1()
+    response = quiz_question_1()
   elif counter == 3:
-    quiz_question_2()
+    response = quiz_question_2()
   elif counter == 4:
-    quiz_question_3()
+    response = quiz_question_3()
   elif counter == 5:
-    quiz_question_4()
+    response = quiz_question_4()
   elif counter == 6:
-    quiz_question_5()
+    response = quiz_question_5()
   elif counter == 7:
-    give_recommendation_and_address()
+    response = ask_for_zipcode()
   else:
-    message = "".join(str(counter))
-    resp = twilio.twiml.Response()
-    resp.sms(message)
-    return str(resp)
-  #else:
-  #  reset_counter()
+    response = give_recommendation_and_address()
+  return response
 
 def reset_counter():
   session.clear()
@@ -55,10 +54,58 @@ def reset_counter():
   return str(resp)
 
 def init_text():
-  reset_counter()
+  message = "Hello! Type 'Find A Location' To find the closest location. Type 'Continue' to determine the best form of birth control."
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
 
 def send_help_text():
-  reset_counter()
-  
+  message = "To use this bot, type your zip code to find the closest location. Type 'Continue' to determine the best form of birth control."
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_1():
+  message = "What blah blha blha."
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_2():
+  message = "Blah blah blha"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_3():
+  message = "Blah blah blha"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_4():
+  message = "Blah blah blha"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_5():
+  message = "Blah blah blha"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def ask_for_zipcode():
+  message = "Please type in your zipcode so we can find the closest location to obtain birth control."
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def give_recommendation_and_address():
+  message = "blah blha blah"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)  
+
 if __name__ == "__main__":
     app.run(debug=True)
