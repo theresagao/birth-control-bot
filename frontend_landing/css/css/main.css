@@ -14,6 +14,7 @@ body {
     font-size: 70px;
     font-weight: bold;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 #logo {
@@ -22,7 +23,6 @@ body {
 }
 
 #number {
-
 }
 
 #content {
@@ -56,4 +56,31 @@ body {
     width: 260px;
     height: 380px;
     margin-left: 50px;
+}
+
+
+@media only screen and (max-width: 700px) {
+    #header {
+        font-size: 40px;
+    }
+
+    #number {
+        padding-left: 35px;
+    }
+
+    #content {
+        flex-wrap: wrap;
+        padding-right: 0px;
+    }
+    #blurb {
+        font-size: 60px;
+        padding: 0px;
+        margin: 20px;
+        padding-bottom: 20px;
+        line-height: 1.5;
+    }
+    #chat {
+        padding: 0px;
+        margin: 0px;
+    }
 }
