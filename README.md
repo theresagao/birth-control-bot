@@ -9,3 +9,11 @@ birthcontrolbot is a sms messaging bot for people to obtain information about bi
 ##The Stack
 
 Built using Python, Flask, and the Twilio API during Spectra Hackathon 2016!
+
+
+##How to Use
+
+1. Put your account sid and auth token in send_sms.py
+2. Set up a server on localhost by running "python run.py"
+3. Secure a tunnel to localhost using ngrok
+4. Your anonymous birth control bot is ready!
