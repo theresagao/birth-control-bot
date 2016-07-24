@@ -8,24 +8,21 @@ app.config.from_object(__name__)
 @app.route("/", methods=['GET', 'POST'])
 
 def hello_monkey():
-  """Respond with the number of text messages sent between two parties."""
-
   counter = session.get('counter', 0)
-
-  # Save the new counter value in the session
-  session['counter'] = counter
 
   msg_body = request.values.get('Body')
   msg_body = str(msg_body).lower()
 
   if msg_body != "help":
-    # increment the counter
     counter += 1
-  
+
+  # Save the new counter value in the session
+  session['counter'] = counter
+
   response = ""
 
   if msg_body == "help":
-    response = send_help_text()    
+    response = send_help_text()
   elif msg_body == "reset":
     response = reset_counter()
   elif counter == 1:
@@ -44,7 +41,7 @@ def hello_monkey():
     response = ask_for_zipcode()
   else:
     response = give_recommendation_and_address()
-  return response
+  return response    
 
 def reset_counter():
   session.clear()
