@@ -26,8 +26,10 @@ def hello_monkey():
   msg_body = request.values.get('Body')
   msg_body = str(msg_body).lower()
 
-  if msg_body != "help" and msg_body != "find a location" and not msg_body.isdigit():
+  if msg_body != "help me" and msg_body != "find a location" and not msg_body.isdigit():
     counter += 1
+
+  print "Counter: " + str(counter)
 
   # Save the new counter value in the session
   session['counter'] = counter
@@ -38,7 +40,7 @@ def hello_monkey():
 
   response = ""
 
-  if msg_body == "help":
+  if msg_body == "help me":
     response = send_help_text()
   elif msg_body == "reset":
     response = reset_counter()
@@ -78,7 +80,7 @@ def reset_counter():
   return str(resp)
 
 def init_text():
-  message = "Hello! Type 'Find A Location' To find the closest location. Type 'Continue' to determine the best form of birth control."
+  message = "Hello! Type 'Find A Location' for the closest location. Type 'Continue' to determine the best form of birth control. Type 'Help me' to see this message again."
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
@@ -238,5 +240,6 @@ def return_closest_center(zipcode):
       return str(resp)
       break      
 
+#LOL @ hackathon code :P
 if __name__ == "__main__":
     app.run(debug=True)
