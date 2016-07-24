@@ -9,6 +9,17 @@ app.config.from_object(__name__)
 
 def hello_monkey():
   counter = session.get('counter', 0)
+  options_arr = session.get('options', [
+                                        "Birth Control Patch", 
+                                        "Depro-Provera (Hormonal Injection)", 
+                                        "Birth Control Ring", 
+                                        "Condom", 
+                                        "Copper IUD", 
+                                        "Hormonal IUD",
+                                        "Birth Control Pill",
+                                        "Tubal Ligation",
+                                        "Vasectomy"
+                                      ])
 
   msg_body = request.values.get('Body')
   msg_body = str(msg_body).lower()
@@ -18,6 +29,10 @@ def hello_monkey():
 
   # Save the new counter value in the session
   session['counter'] = counter
+
+  options_arr = eliminate_from_array(counter, options_arr, msg_body)
+
+  session['options'] = options_arr
 
   response = ""
 
@@ -38,9 +53,13 @@ def hello_monkey():
   elif counter == 6:
     response = quiz_question_5()
   elif counter == 7:
-    response = ask_for_zipcode()
+    response = quiz_question_6()
+  elif counter == 8:
+    response = quiz_question_7()        
+  elif counter == 9:
+    response = quiz_question_8()
   else:
-    response = give_recommendation_and_address()
+    response = give_recommendation_and_address(options_arr)
   return response    
 
 def reset_counter():
@@ -63,46 +82,125 @@ def send_help_text():
   return str(resp)
 
 def quiz_question_1():
-  message = "What blah blha blha."
+  message = "Are you male or female? (Ans: m/f)"
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
 
 def quiz_question_2():
-  message = "Blah blah blha"
+  message = "Are you ok with a permanent form of contraception? (y/n)"
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
 
 def quiz_question_3():
-  message = "Blah blah blha"
+  message = "Are you ok with a hormonal form of contraception? (y/n)"
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
 
 def quiz_question_4():
-  message = "Blah blah blha"
+  message = "Are you ok with interrupting sexual activity to use birth control? (y/n)"
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
 
 def quiz_question_5():
-  message = "Blah blah blha"
+  message = "Will you be able to remember to take birth control every day? (y/n)"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_6():
+  message = "Will you be able to remember to take birth control every week/month? (y/n)"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_7():
+  message = "Are you ok with receiving birth control in injection form? (y/n)"
+  resp = twilio.twiml.Response()
+  resp.sms(message)
+  return str(resp)
+
+def quiz_question_8():
+  message = "Are you ok with birth control increasing your menstrual symptoms? (y/n)"
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
 
 def ask_for_zipcode():
-  message = "Please type in your zipcode so we can find the closest location to obtain birth control."
+  message = "Please type in your zipcode so we can find the closest location to obtain birth control. (#####)"
   resp = twilio.twiml.Response()
   resp.sms(message)
   return str(resp)
 
-def give_recommendation_and_address():
-  message = "blah blha blah"
+def give_recommendation_and_address(options_arr):
+  if len(options_arr) == 0:
+    message = "Please consult with your doctors for options."
+  else:
+    message = "Possible forms of birth control are " + ", ".join(options_arr)
   resp = twilio.twiml.Response()
   resp.sms(message)
-  return str(resp)  
+  session.clear()
+  return str(resp)
+
+def eliminate_from_array(counter, options_arr, msg_body):
+  if msg_body == "y":
+    return options_arr
+  elif counter == 3:
+    if msg_body == "m":
+      options_arr.remove("Tubal Ligation")
+      print options_arr
+    elif msg_body == "f":
+      options_arr.remove("Vasectomy")
+      print options_arr  
+    print counter  
+  elif counter == 4:
+    if msg_body == "n":
+      if "Tubal Ligation" in options_arr:
+        options_arr.remove("Tubal Ligation")
+      if "Vasectomy" in options_arr:
+        options_arr.remove("Vasectomy")
+    print options_arr
+    print counter
+  elif counter == 5:
+    if msg_body == "n":
+      options_arr.remove("Depro-Provera (Hormonal Injection)")
+      options_arr.remove("Hormonal IUD")      
+      options_arr.remove("Birth Control Pill")  
+    print options_arr 
+    print counter   
+  elif counter == 6:
+    if msg_body == "n":
+      options_arr.remove("Condom")
+    print options_arr
+    print counter
+  elif counter == 7: 
+    if msg_body == "n":
+      if "Birth Control Pill" in options_arr:
+        options_arr.remove("Birth Control Pill")
+    print options_arr
+    print counter
+  elif counter == 8:  
+    if msg_body == "n":
+      options_arr.remove("Birth Control Patch")
+      options_arr.remove("Birth Control Ring")
+    print options_arr
+    print counter
+  elif counter == 9:  
+    if msg_body == "n":
+      if "Depro-Provera (Hormonal Injection)" in options_arr:
+        options_arr.remove("Depro-Provera (Hormonal Injection)")
+    print options_arr
+    print counter
+  elif counter == 10:
+    if msg_body == "n":
+      options_arr.remove("Copper IUD")
+    print options_arr
+    print counter
+
+  return options_arr  
 
 if __name__ == "__main__":
     app.run(debug=True)
