@@ -1,6 +1,6 @@
 ##birthcontrolbot
 
-Created by <a href="http://github.com/theresagao">Theresa Gao</a>, <a href="http://github.com/smsukardi">Sarah Sukardi</a>, and <a href="http://github.com/smikatoots">Mika Reyes!</a>
+Created by <a href="http://github.com/theresagao">Theresa Gao</a>, <a href="http://github.com/smsukardi">Sarah Sukardi</a>, and <a href="http://github.com/smikatoots">Mika Reyes</a>!
 
 ##What is it?
 

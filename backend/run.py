@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, session
 import twilio.twiml
+import re
+import requests
 
 SECRET_KEY = 'NEW SESSION'
 app = Flask(__name__)
@@ -24,7 +26,7 @@ def hello_monkey():
   msg_body = request.values.get('Body')
   msg_body = str(msg_body).lower()
 
-  if msg_body != "help":
+  if msg_body != "help" and msg_body != "find a location" and not msg_body.isdigit():
     counter += 1
 
   # Save the new counter value in the session
@@ -40,6 +42,12 @@ def hello_monkey():
     response = send_help_text()
   elif msg_body == "reset":
     response = reset_counter()
+  elif msg_body == "find a location":
+    response = ask_for_zipcode()
+  elif msg_body.isdigit():
+    print "hi this is a zipcode"
+    response = return_closest_center(msg_body)
+    print "method finished"
   elif counter == 1:
     response = init_text()
   elif counter == 2:
@@ -57,7 +65,7 @@ def hello_monkey():
   elif counter == 8:
     response = quiz_question_7()        
   elif counter == 9:
-    response = quiz_question_8()
+    response = quiz_question_8()  
   else:
     response = give_recommendation_and_address(options_arr)
   return response    
@@ -201,6 +209,34 @@ def eliminate_from_array(counter, options_arr, msg_body):
     print counter
 
   return options_arr  
+
+def return_closest_center(zipcode):
+  r = requests.get("https://www.plannedparenthood.org/health-center/all/all/"+str(zipcode))
+  #print(urllib2.urlopen("https://www.plannedparenthood.org/health-center/all/all/94582").read()) 
+  center = ""
+  #with r.content.split("\n") as i:
+  for line in  r.content.split("\n"):
+    addr_m = re.match(r'.*center_address">(.*)</.*', line)
+    city_m = re.match(r'.*center_city">(.*)</.*', line)
+    state_m = re.match(r'.*center_state_abbr">(.*)</.*', line)
+    zip_m = re.match(r'.*center_zip">(.*)</.*', line)
+    if addr_m:
+      addr = addr_m.group(1)
+      center = addr
+    if city_m: 
+      city = city_m.group(1)
+      center += ", " + city
+    if state_m:
+      state = state_m.group(1)
+      center += ", " + state
+    if zip_m:
+      zipcode = zip_m.group(1)
+      center += ", " + zipcode + " is the closest Planned Parenthood location."
+  
+      resp = twilio.twiml.Response()
+      resp.sms(center)
+      return str(resp)
+      break      
 
 if __name__ == "__main__":
     app.run(debug=True)
