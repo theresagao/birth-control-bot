@@ -76,74 +76,62 @@ def hello_monkey():
 def reset_counter():
   session.clear()
   message = "Your session has been reset."
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def init_text():
   message = "Hello! Type 'Find A Location' for the closest location. Type 'Continue' to determine the best form of birth control. Type 'Help me' to see this message again."
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def send_help_text():
   message = "To use this bot, type your zip code to find the closest location. Type 'Continue' to determine the best form of birth control."
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_1():
   message = "Are you male or female? (Ans: m/f)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_2():
   message = "Are you ok with a permanent form of contraception? (y/n)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_3():
   message = "Are you ok with a hormonal form of contraception? (y/n)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_4():
   message = "Are you ok with interrupting sexual activity to use birth control? (y/n)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_5():
   message = "Will you be able to remember to take birth control every day? (y/n)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_6():
   message = "Will you be able to remember to take birth control every week/month? (y/n)"
-  resp = twilio.twiml.Response()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_7():
   message = "Are you ok with receiving birth control in injection form? (y/n)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def quiz_question_8():
   message = "Are you ok with birth control increasing your menstrual symptoms? (y/n)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def ask_for_zipcode():
   message = "Please type in your zipcode so we can find the closest location to obtain birth control. (#####)"
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   return str(resp)
 
 def give_recommendation_and_address(options_arr):
@@ -151,8 +139,7 @@ def give_recommendation_and_address(options_arr):
     message = "Please consult with your doctors for options."
   else:
     message = "Possible forms of birth control are " + ", ".join(options_arr)
-  resp = twilio.twiml.MessagingResponse()
-  resp.sms(message)
+  resp = MessagingResponse().message(message);
   session.clear()
   return str(resp)
 
@@ -236,10 +223,10 @@ def return_closest_center(zipcode):
       zipcode = zip_m.group(1)
       center += ", " + zipcode + " is the closest Planned Parenthood location."
   
-      resp = twilio.twiml.MessagingResponse()
-      resp.sms(center)
+      resp = MessagingResponse().message(center);
       return str(resp)
       break      
+
 
 if __name__ == "__main__":
     app.run(debug=True)
