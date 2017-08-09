@@ -3,6 +3,21 @@ import twilio.twiml
 from twilio.twiml.messaging_response import MessagingResponse, Message
 import re
 import requests
+from twilio.rest import Client
+
+account_sid = "AC8d460c2afad3a32712fb62230c04107f" # Your Account SID from www.twilio.com/console    
+auth_token  = "51f875c833e2054c89744b85e678e25c"  # Your Auth Token from www.twilio.com/console
+
+client = Client(account_sid, auth_token)
+to_num = "+19255231279"
+from_num = "+12063953708"
+
+def send_text(client, body, to_num, from_num): 
+  message = client.messages.create(body=body,
+      to=to_num, from_=from_num # Replace with your Twilio number
+  )
+  print message
+
 
 SECRET_KEY = 'kKqL1FQek2dGtjBoONmciu57VO8JXIIh'
 app = Flask(__name__)
@@ -83,6 +98,7 @@ def reset_counter():
 def init_text():
   message = "Hello! Type 'Find A Location' for the closest location. Type 'Continue' to determine the best form of birth control. Type 'Help me' to see this message again."
   resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def send_help_text():
