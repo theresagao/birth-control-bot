@@ -4,7 +4,7 @@ from twilio.twiml.messaging_response import MessagingResponse, Message
 import re
 import requests
 
-SECRET_KEY = 'NEW SESSION'
+SECRET_KEY = 'kKqL1FQek2dGtjBoONmciu57VO8JXIIh'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -53,6 +53,7 @@ def hello_monkey():
     print "method finished"
   elif counter == 1:
     response = init_text()
+    print("hi")
   elif counter == 2:
     response = quiz_question_1()
   elif counter == 3:
