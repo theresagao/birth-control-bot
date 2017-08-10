@@ -71,6 +71,7 @@ def hello_monkey():
     print("hi")
   elif counter == 2:
     response = quiz_question_1()
+    print response
   elif counter == 3:
     response = quiz_question_2()
   elif counter == 4:
@@ -93,6 +94,7 @@ def reset_counter():
   session.clear()
   message = "Your session has been reset."
   resp = MessagingResponse().message(message);
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def init_text():
@@ -104,51 +106,69 @@ def init_text():
 def send_help_text():
   message = "To use this bot, type your zip code to find the closest location. Type 'Continue' to determine the best form of birth control."
   resp = MessagingResponse().message(message);
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_1():
   message = "Are you male or female? (Ans: m/f)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_2():
   message = "Are you ok with a permanent form of contraception? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_3():
   message = "Are you ok with a hormonal form of contraception? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_4():
   message = "Are you ok with interrupting sexual activity to use birth control? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_5():
   message = "Will you be able to remember to take birth control every day? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_6():
   message = "Will you be able to remember to take birth control every week/month? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_7():
   message = "Are you ok with receiving birth control in injection form? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_8():
   message = "Are you ok with birth control increasing your menstrual symptoms? (y/n)"
-  resp = MessagingResponse().message(message);
+  resp = MessagingResponse()
+  resp.append(resp.message(message))
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def ask_for_zipcode():
   message = "Please type in your zipcode so we can find the closest location to obtain birth control. (#####)"
   resp = MessagingResponse().message(message);
+  #send_text(client, message, to_num, from_num)
   return str(resp)
 
 def give_recommendation_and_address(options_arr):
@@ -157,6 +177,7 @@ def give_recommendation_and_address(options_arr):
   else:
     message = "Possible forms of birth control are " + ", ".join(options_arr)
   resp = MessagingResponse().message(message);
+  #send_text(client, message, to_num, from_num)
   session.clear()
   return str(resp)
 
@@ -241,8 +262,11 @@ def return_closest_center(zipcode):
       center += ", " + zipcode + " is the closest Planned Parenthood location."
   
       resp = MessagingResponse().message(center);
+      #send_text(client, message, to_num, from_num)
       return str(resp)
-      break      
+      break   
+  resp = MessagingResponse().message("No Locations Found");
+  return str(resp)
 
 
 if __name__ == "__main__":
