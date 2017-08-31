@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, session
+from flask import Flask, request, redirect
 import twilio.twiml
 from twilio.twiml.messaging_response import MessagingResponse, Message
 import re
@@ -18,16 +18,9 @@ def send_text(client, body, to_num, from_num):
   )
   print message
 
-
-SECRET_KEY = 'kKqL1FQek2dGtjBoONmciu57VO8JXIIh'
-app = Flask(__name__)
-app.config.from_object(__name__)
-
-@app.route("/", methods=['GET', 'POST'])
-
-def hello_monkey():
-  counter = session.get('counter', 0)
-  options_arr = session.get('options', [
+session = { 
+'counter': 0,
+'options' : [
                                         "Birth Control Patch", 
                                         "Depro-Provera (Hormonal Injection)", 
                                         "Birth Control Ring", 
@@ -37,7 +30,18 @@ def hello_monkey():
                                         "Birth Control Pill",
                                         "Tubal Ligation",
                                         "Vasectomy"
-                                      ])
+                                        ]
+                              }
+
+SECRET_KEY = 'kKqL1FQek2dGtjBoONmciu57VO8JXIIh'
+app = Flask(__name__)
+app.config.from_object(__name__)
+
+@app.route("/", methods=['GET', 'POST'])
+
+def hello_monkey():
+  counter = session.get('counter', 0)
+  options_arr = session.get('options')
 
   msg_body = request.values.get('Body')
   msg_body = str(msg_body).lower()
@@ -65,6 +69,7 @@ def hello_monkey():
   elif msg_body.isdigit():
     print "hi this is a zipcode"
     response = return_closest_center(msg_body)
+    print response 
     print "method finished"
   elif counter == 1:
     response = init_text()
@@ -94,7 +99,7 @@ def reset_counter():
   session.clear()
   message = "Your session has been reset."
   resp = MessagingResponse().message(message);
-  #send_text(client, message, to_num, from_num)
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def init_text():
@@ -106,69 +111,61 @@ def init_text():
 def send_help_text():
   message = "To use this bot, type your zip code to find the closest location. Type 'Continue' to determine the best form of birth control."
   resp = MessagingResponse().message(message);
-  #send_text(client, message, to_num, from_num)
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_1():
   message = "Are you male or female? (Ans: m/f)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_2():
   message = "Are you ok with a permanent form of contraception? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_3():
   message = "Are you ok with a hormonal form of contraception? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_4():
   message = "Are you ok with interrupting sexual activity to use birth control? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_5():
   message = "Will you be able to remember to take birth control every day? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_6():
   message = "Will you be able to remember to take birth control every week/month? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_7():
   message = "Are you ok with receiving birth control in injection form? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def quiz_question_8():
   message = "Are you ok with birth control increasing your menstrual symptoms? (y/n)"
-  resp = MessagingResponse()
-  resp.append(resp.message(message))
-  #send_text(client, message, to_num, from_num)
+  resp = MessagingResponse().message(message);
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def ask_for_zipcode():
   message = "Please type in your zipcode so we can find the closest location to obtain birth control. (#####)"
   resp = MessagingResponse().message(message);
-  #send_text(client, message, to_num, from_num)
+  send_text(client, message, to_num, from_num)
   return str(resp)
 
 def give_recommendation_and_address(options_arr):
@@ -177,7 +174,7 @@ def give_recommendation_and_address(options_arr):
   else:
     message = "Possible forms of birth control are " + ", ".join(options_arr)
   resp = MessagingResponse().message(message);
-  #send_text(client, message, to_num, from_num)
+  send_text(client, message, to_num, from_num)
   session.clear()
   return str(resp)
 
@@ -235,7 +232,7 @@ def eliminate_from_array(counter, options_arr, msg_body):
       options_arr.remove("Copper IUD")
     print options_arr
     print counter
-
+  #add response for no options left
   return options_arr  
 
 def return_closest_center(zipcode):
@@ -262,7 +259,7 @@ def return_closest_center(zipcode):
       center += ", " + zipcode + " is the closest Planned Parenthood location."
   
       resp = MessagingResponse().message(center);
-      #send_text(client, message, to_num, from_num)
+      send_text(client, message, to_num, from_num)
       return str(resp)
       break   
   resp = MessagingResponse().message("No Locations Found");
