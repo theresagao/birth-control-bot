@@ -133,7 +133,7 @@ def quiz_question_3():
   return str(resp)
 
 def quiz_question_4():
-  message = "Are you ok with interrupting sexual activity to use birth control? (y/n)"
+  message = "Would you want protection from STDs? (y/n)"
   resp = MessagingResponse().message(message);
   send_text(client, message, to_num, from_num)
   return str(resp)
@@ -237,9 +237,7 @@ def eliminate_from_array(counter, options_arr, msg_body):
 
 def return_closest_center(zipcode):
   r = requests.get("https://www.plannedparenthood.org/health-center/all/all/"+str(zipcode))
-  #print(urllib2.urlopen("https://www.plannedparenthood.org/health-center/all/all/94582").read()) 
-  center = "Hi"
-  #with r.content.split("\n") as i:
+  center = ""
   for line in  r.content.split("\n"):
     addr_m = re.match(r'.*streetAddress">(.*)</.*', line)
     city_m = re.match(r'.*addressLocality">(.*)</.*', line)
