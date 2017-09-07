@@ -28,8 +28,7 @@ session = {
                                         "Copper IUD", 
                                         "Hormonal IUD",
                                         "Birth Control Pill",
-                                        "Tubal Ligation",
-                                        "Vasectomy"
+                                        "Tubal Ligation"
                                         ]
                               }
 
@@ -46,8 +45,10 @@ def hello_monkey():
   msg_body = request.values.get('Body')
   msg_body = str(msg_body).lower()
 
-  if msg_body != "help me" and msg_body != "find a location" and not msg_body.isdigit():
+  if msg_body != "help me" and msg_body != "find a location" and not msg_body.isdigit() and counter != 1:
     counter += 1
+  elif counter == 1:
+    counter = 3
 
   print "Counter: " + str(counter)
 
@@ -75,8 +76,9 @@ def hello_monkey():
     response = init_text()
     print("hi")
   elif counter == 2:
-    response = quiz_question_1()
-    print response
+    print("i'm 2 now, skip me")
+    #response = quiz_question_1()
+    #print response
   elif counter == 3:
     response = quiz_question_2()
   elif counter == 4:
@@ -114,11 +116,11 @@ def send_help_text():
   send_text(client, message, to_num, from_num)
   return str(resp)
 
-def quiz_question_1():
+"""def quiz_question_1():
   message = "Are you male or female? (Ans: m/f)"
   resp = MessagingResponse().message(message);
   send_text(client, message, to_num, from_num)
-  return str(resp)
+  return str(resp)"""
 
 def quiz_question_2():
   message = "Are you ok with a permanent form of contraception? (y/n)"
@@ -179,22 +181,21 @@ def give_recommendation_and_address(options_arr):
   return str(resp)
 
 def eliminate_from_array(counter, options_arr, msg_body):
+  if msg_body != "y" or msg_body != "n":
+    print("Sorry, that is not an answer. Please try again with either (y/n).")
   if msg_body == "y":
     return options_arr
   elif counter == 3:
-    if msg_body == "m":
+    """if msg_body == "m":
       options_arr.remove("Tubal Ligation")
       print options_arr
     elif msg_body == "f":
       options_arr.remove("Vasectomy")
-      print options_arr  
-    print counter  
+      print options_arr"""
   elif counter == 4:
     if msg_body == "n":
       if "Tubal Ligation" in options_arr:
         options_arr.remove("Tubal Ligation")
-      if "Vasectomy" in options_arr:
-        options_arr.remove("Vasectomy")
     print options_arr
     print counter
   elif counter == 5:
@@ -232,6 +233,8 @@ def eliminate_from_array(counter, options_arr, msg_body):
       options_arr.remove("Copper IUD")
     print options_arr
     print counter
+    if not options_arr:
+      print("Unfortunately, there are no birth control options for you at this time. (donate to Planned Parenthood!)")
   #add response for no options left
   return options_arr  
 
